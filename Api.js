@@ -78,6 +78,15 @@ var Api = function (WSocket, Configuration, Direction, Element, Point, Board, So
     });
   }
 
+  var emul = function (message) {
+    var message =
+      'board={"currentFigureType":"O","futureFigures":["O","O","O","O"],"layers":["........OO................OO............................................................................................................................OO................OO................OO................OO................OO................OO................OO................OO................OO......OO........OO......OO"],"currentFigurePoint":{"x":8,"y":17},"levelProgress":{"total":19,"current":1,"lastPassed":0}}';
+    var pattern = new RegExp(/^board=(.*)$/);
+    var parameters = message.match(pattern);
+    var boardString = parameters[1];
+    var answer = processBoard(boardString);
+  };
+
   var processBoard = function (boardString) {
     var parsedBoard = JSON.parse(boardString);
     var board = new Board(parsedBoard, Element, Point);
@@ -103,6 +112,7 @@ var Api = function (WSocket, Configuration, Direction, Element, Point, Board, So
 
   return {
     start: connect,
+    emul: emul,
   };
 };
 

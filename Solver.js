@@ -19,13 +19,27 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-var Solver = function (Direction, Element) {
+var Solver = function (Direction, Element, Board) {
   return {
     /**
      * @return next hero action
      */
     get: function (board) {
       // TODO your code here
+      var currenFigureCoordinates = board.getFigures();
+
+      var isCollision = function (currenFigureCoordinates) {
+        for (var i = 0; i < currenFigureCoordinates.length; i++) {
+          if (!board.isAt(currenFigureCoordinates[i][0], currenFigureCoordinates[i][1], '.')) {
+            return true;
+          }
+          return false;
+        }
+      };
+
+      console.log(isCollision(currenFigureCoordinates));
+
+      console.log('what is there at 8,17 :' + board.getAt(8, 17));
 
       return Direction.RIGHT;
     },

@@ -32,4 +32,17 @@ var Element = {
   BORDER: '#',
 };
 
-if (module) module.exports = Element;
+var Tetro = {
+  O: {
+    0: [
+      [0, 1],
+      [0, 1],
+    ],
+    1: [
+      [-1, 0],
+      [-1, 0],
+    ],
+  },
+};
+
+if (module) (module.exports = Element), Tetro;

@@ -130,16 +130,35 @@ var Board = function (board, Element, pointClass) {
     return result;
   };
 
-  var getFigures = function () {
-    return findAll(
-      Element.BLUE,
-      Element.CYAN,
-      Element.ORANGE,
-      Element.YELLOW,
-      Element.GREEN,
-      Element.PURPLE,
-      Element.RED
-    );
+  var getFigures = function (rotation = 0) {
+    var currentFigureLayout = [],
+      XYLFigureCoords = [],
+      curFigureCoords = [],
+      curX = 0,
+      curY = 0,
+      curXYL = 0;
+
+    currentFigureLayout = Tetro[getCurrentFigureType()][rotation];
+    curX = getCurrentFigurePosition().getX();
+    curY = getCurrentFigurePosition().getY();
+
+    for (var y = 0; y < currentFigureLayout.length; y++) {
+      for (var x = 0; x < currentFigureLayout[y].length; x++) {
+        var tArr = [];
+        curXYL = xyl.getLength(curX + currentFigureLayout[x][y], curY - x);
+        board.layers[0] = replaceAt(board.layers[0], curXYL, '.');
+        XYLFigureCoords.push(curXYL);
+        tArr.push(curX + currentFigureLayout[x][y]);
+        tArr.push(curY - x);
+        curFigureCoords.push(tArr);
+      }
+    }
+
+    return curFigureCoords;
+  };
+
+  var replaceAt = function (str, index, replacement) {
+    return str.substr(0, index) + replacement + str.substr(index + replacement.length);
   };
 
   var getFreeSpace = function () {
