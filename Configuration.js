@@ -22,7 +22,6 @@
 // Tune you application here
 const connectionString =
   'http://localhost:8080/codenjoy-contest/board/player/ziwpjz46y4z5567k7uup?code=3867579515136108220';
-//const connectionString = "http://codebattle2020.westeurope.cloudapp.azure.com/codenjoy-contest/board/player/fj1w59p4mczogs5i6o2i?code=7325919953518087704";
 const isAdditionalLoggingEnabled = true;
 const connectionTimeout = 1000; // mS
 

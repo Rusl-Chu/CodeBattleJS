@@ -26,20 +26,27 @@ var Solver = function (Direction, Element, Board) {
      */
     get: function (board) {
       // TODO your code here
-      var currenFigureCoordinates = board.getFigures();
 
-      var isCollision = function (currenFigureCoordinates) {
-        for (var i = 0; i < currenFigureCoordinates.length; i++) {
-          if (!board.isAt(currenFigureCoordinates[i][0], currenFigureCoordinates[i][1], '.')) {
-            return true;
-          }
-          return false;
+      board.getFigures();
+
+      var tryAction = function (action) {
+        switch (action.toString()) {
+          case 'right':
+            return board.getFigures(0, 1, 0, false);
+          case 'left':
+            return board.getFigures(0, -1, 0, false);
+          case 'act':
+            return board.getFigures(1, 0, 0, false);
+          case 'act(2)':
+            return board.getFigures(2, 0, 0, false);
+          case 'act(3)':
+            return board.getFigures(3, 0, 0, false);
+          default:
+            return board.getFigures(0, 0, 0, false);
         }
       };
 
-      console.log(isCollision(currenFigureCoordinates));
-
-      console.log('what is there at 8,17 :' + board.getAt(8, 17));
+      tryAction(Direction.RIGHT);
 
       return Direction.RIGHT;
     },

@@ -22,5 +22,4 @@
 
 var WSocket = require('ws');
 var api = new Api(WSocket, Configuration, Direction, Element, Point, Board, Solver);
-//api.start();
-api.emul();
+api.start();

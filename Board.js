@@ -130,31 +130,61 @@ var Board = function (board, Element, pointClass) {
     return result;
   };
 
-  var getFigures = function (rotation = 0) {
+  var getFigures = function (rotation = 0, shiftX = 0, shiftY = 0, initRun = true) {
     var currentFigureLayout = [],
-      XYLFigureCoords = [],
       curFigureCoords = [],
       curX = 0,
       curY = 0,
       curXYL = 0;
 
-    currentFigureLayout = Tetro[getCurrentFigureType()][rotation];
-    curX = getCurrentFigurePosition().getX();
-    curY = getCurrentFigurePosition().getY();
+    currentFigureLayout = Tetro[getCurrentFigureType()][rotation].layout;
+    curX = getCurrentFigurePosition().getX() + shiftX;
+    curY =
+      getCurrentFigurePosition().getY() + Tetro[getCurrentFigureType()][rotation].yShift + shiftY;
 
     for (var y = 0; y < currentFigureLayout.length; y++) {
       for (var x = 0; x < currentFigureLayout[y].length; x++) {
         var tArr = [];
-        curXYL = xyl.getLength(curX + currentFigureLayout[x][y], curY - x);
-        board.layers[0] = replaceAt(board.layers[0], curXYL, '.');
-        XYLFigureCoords.push(curXYL);
-        tArr.push(curX + currentFigureLayout[x][y]);
-        tArr.push(curY - x);
+
+        if (!Number.isInteger(currentFigureLayout[y][x])) {
+          continue;
+        }
+
+        if (initRun) {
+          curXYL = xyl.getLength(curX + currentFigureLayout[y][x], curY - y);
+          removeCurFigureFromField(curXYL);
+          Tetro[getCurrentFigureType()].currentCoords = curFigureCoords;
+        }
+
+        tArr.push(curX + currentFigureLayout[y][x]);
+        tArr.push(curY - y);
         curFigureCoords.push(tArr);
       }
     }
 
-    return curFigureCoords;
+    return {
+      figureCoords: curFigureCoords,
+      hasColiision: !mapFildUnderFigure(curFigureCoords).every(hasCollision),
+    };
+  };
+
+  var hasCollision = function (element, index, array) {
+    return element == '.';
+  };
+
+  var removeCurFigureFromField = function (curXYL) {
+    board.layers[0] = replaceAt(board.layers[0], curXYL, '.'); // remove current figure from field
+    return true;
+  };
+
+  var mapFildUnderFigure = function (curFigureCoords) {
+    var mArr = curFigureCoords,
+      tArr = [];
+    for (var i = 0; i < mArr.length; i++) {
+      tArr.push(getAt(mArr[i][0], mArr[i][1]));
+    }
+    //console.log(tArr);
+    return tArr;
   };
 
   var replaceAt = function (str, index, replacement) {
